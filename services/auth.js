@@ -1,4 +1,4 @@
-const { verifyJsonWebToken } = require("../services/JWT");
+const { verifyJsonWebToken } = require("./JWT");
 
 module.exports = async (req, res, next) => {
   const Token = req.header(process.env.JWTHeaderName);
