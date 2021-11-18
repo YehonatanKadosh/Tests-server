@@ -1,6 +1,6 @@
 const { verifyJsonWebToken } = require("../services/JWT");
 
-const JWTauthentication = async (req, res, next) => {
+module.exports = async (req, res, next) => {
   const Token = req.header(process.env.JWTHeaderName);
   if (!Token) return res.status(401).send("access denied. no token provided");
   try {
@@ -10,5 +10,3 @@ const JWTauthentication = async (req, res, next) => {
     next("invalid token");
   }
 };
-
-module.exports = JWTauthentication;
