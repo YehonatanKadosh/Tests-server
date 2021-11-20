@@ -1,6 +1,11 @@
 const express = require("express");
 const { newJsonWebToken } = require("../services/JWT");
-const { createUser } = require("../services/mongoose/requestHandlers/user");
+const { user_validator } = require("../services/mongoose/models/user");
+const {
+  createUser,
+  findUserById,
+  findUserByEmail,
+} = require("../services/mongoose/requestHandlers/user");
 const signupRouter = express.Router();
 
 signupRouter.post("/", async (req, res, next) => {
@@ -9,10 +14,14 @@ signupRouter.post("/", async (req, res, next) => {
     const jwt = newJsonWebToken(user);
     const { firstName, lastName, role } = user;
     res
-      .cookie(process.env.JWTHeaderName, jwt)
+      .cookie(process.env.JWTHeaderName, jwt, {
+        httpOnly: true,
+        sameSite: true,
+      })
       .send({ firstName, lastName, role });
   } catch (error) {
-    next(error);
+    if (error.code === 11000) res.status(422).send("Email already exist!");
+    else next(error);
   }
 });
 
