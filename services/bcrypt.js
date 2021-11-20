@@ -7,7 +7,7 @@ const encryptPassword = async (password) => {
 };
 
 // returns boolean value (is it Valid)
-const validatePassword = async (enteredPassword, savedPassword) =>
+const passwordIsValid = async (enteredPassword, savedPassword) =>
   await bcrypt.compare(enteredPassword, savedPassword);
 
-module.exports = { encryptPassword, validatePassword };
+module.exports = { encryptPassword, passwordIsValid };

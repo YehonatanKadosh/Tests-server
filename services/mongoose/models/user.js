@@ -3,7 +3,7 @@ const Joi = require("joi");
 const { roles } = require("../enums");
 
 const userSchema = new Schema({
-  email: String,
+  email: { type: String, unique: true },
   password: String,
   firstName: String,
   lastName: String,
@@ -18,7 +18,12 @@ const user_validator = Joi.object({
   password: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  phoneNumber: Joi.number().required(),
+  phoneNumber: Joi.string()
+    .length(10)
+    .pattern(
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    )
+    .required(),
   role: Joi.string()
     .valid(...Object.values(roles))
     .required(),

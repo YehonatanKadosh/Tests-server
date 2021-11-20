@@ -5,14 +5,18 @@ const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 4000;
 
+// routers
+const loginRouter = require("./routs/login/login");
+const signupRouter = require("./routs/signup");
+
 // app config
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // config app routers
-const questionRouter = require("./routs/question");
-app.use("/api/questions", questionRouter);
+app.use("/login", loginRouter);
+app.use("/signup", signupRouter);
 
 // errors handler
 app.use((err, req, res, next) => {

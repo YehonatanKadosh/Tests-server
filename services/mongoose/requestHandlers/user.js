@@ -1,6 +1,7 @@
 const { userModel, user_validator } = require("../models/user");
 const { genericCreate, genericGet, genericUpdate } = require("./generiCRUD");
 const { encryptPassword } = require("../../bcrypt");
+const { roles } = require("../enums");
 
 const findUserById = async (_id) => await genericGet(_id, userModel);
 
@@ -8,7 +9,11 @@ const findUserByEmail = async (email) => await userModel.findOne({ email });
 
 const createUser = async (user) =>
   await genericCreate(
-    { ...user, password: await encryptPassword(user.password) },
+    {
+      ...user,
+      password: await encryptPassword(user.password),
+      role: roles.User,
+    },
     user_validator,
     userModel
   );
