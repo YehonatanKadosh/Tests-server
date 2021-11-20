@@ -19,10 +19,7 @@ const user_validator = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   phoneNumber: Joi.string()
-    .length(10)
-    .pattern(
-      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-    )
+    .pattern(/^\+?(972|0)(-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$/)
     .required(),
   role: Joi.string()
     .valid(...Object.values(roles))

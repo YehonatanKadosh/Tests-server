@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const newJsonWebToken = function ({ id, email, role }) {
-  return jwt.sign(arguments[0], process.env.JSONWEBTOKENS);
-};
+const newJsonWebToken = ({ id, email, role }) =>
+  jwt.sign({ id, email, role }, process.env.JSONWEBTOKENS);
 
 const verifyJsonWebToken = async (token) => {
   return new Promise((res, rej) => {
