@@ -2,7 +2,6 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const port = process.env.PORT || 4000;
 
@@ -12,10 +11,9 @@ const signupRouter = require("./routs/signup");
 const userRouter = require("./routs/user");
 
 // app config
-app.use(cors());
+app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser());
 
 // config app routers
 app.use("/login", loginRouter);

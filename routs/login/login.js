@@ -11,18 +11,12 @@ const {
 loginRouter.post("/", async (req, res, next) => {
   try {
     await login_validator.validateAsync(req.body);
-    const { email, password, rememberMe } = req.body;
-    const user = await login({ email, password });
+    const user = await login(req.body);
     const jwt = newJsonWebToken(user);
     const { firstName, lastName, role } = user;
-    if (rememberMe)
-      res.cookie(process.env.JWTHeaderName, jwt, {
-        maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: true,
-      });
-    else res.cookie(process.env.JWTHeaderName, jwt);
-    res.send({ firstName, lastName, role });
+    res
+      .header(process.env.JWTHeaderName, jwt)
+      .send({ firstName, lastName, role });
   } catch (error) {
     next(error);
   }

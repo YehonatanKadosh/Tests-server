@@ -14,10 +14,7 @@ signupRouter.post("/", async (req, res, next) => {
     const jwt = newJsonWebToken(user);
     const { firstName, lastName, role } = user;
     res
-      .cookie(process.env.JWTHeaderName, jwt, {
-        httpOnly: true,
-        sameSite: true,
-      })
+      .header(process.env.JWTHeaderName, jwt)
       .send({ firstName, lastName, role });
   } catch (error) {
     if (error.code === 11000) res.status(422).send("Email already exist!");
