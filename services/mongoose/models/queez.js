@@ -14,6 +14,7 @@ const queezSchema = new Schema({
   topic: String,
   successMessage: String,
   failMessage: String,
+  version: Number,
 
   // mailing handler
   successEmailSubject: String,
@@ -38,6 +39,7 @@ const queez_validator = Joi.object({
   topic: Joi.string().required(),
   successMessage: Joi.string().required(),
   failMessage: Joi.string().required(),
+  version: Joi.number().default(1),
 
   // mailing handler
   successEmailSubject: Joi.string().required(),
