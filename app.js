@@ -1,14 +1,16 @@
 // config
 require("dotenv").config();
 const express = require("express");
-const app = express();
 const cors = require("cors");
+const app = express();
 const port = process.env.PORT || 4000;
 
 // routers
 const loginRouter = require("./routs/login/login");
 const signupRouter = require("./routs/signup");
 const userRouter = require("./routs/user");
+const topicRouter = require("./routs/topic");
+const tagRouter = require("./routs/tag");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -19,6 +21,8 @@ app.use(express.json());
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/user", userRouter);
+app.use("/user", topicRouter);
+app.use("/user", tagRouter);
 
 // errors handler
 app.use((err, req, res, next) => {
