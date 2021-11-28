@@ -11,8 +11,12 @@ tagRouter.get("/", [auth, admin], async (req, res, next) =>
   res.send(await findAllTags())
 );
 
-tagRouter.post("/", [auth, admin], async (req, res, next) =>
-  res.send(await createTag(req.body))
-);
+tagRouter.post("/", [auth, admin], async (req, res, next) => {
+  try {
+    res.send(await createTag(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = tagRouter;

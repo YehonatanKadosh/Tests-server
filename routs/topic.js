@@ -11,8 +11,12 @@ topicRouter.get("/", [auth, admin], async (req, res, next) =>
   res.send(await findAllTopics())
 );
 
-topicRouter.post("/", [auth, admin], async (req, res, next) =>
-  res.send(await createTopic(req.body))
-);
+topicRouter.post("/", [auth, admin], async (req, res, next) => {
+  try {
+    res.send(await createTopic(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = topicRouter;

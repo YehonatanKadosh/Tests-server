@@ -4,7 +4,7 @@ const genericUpdate = async (_id, updateFilter, mongoModel) =>
   await mongoModel.updateOne({ _id }, updateFilter);
 
 const genericCreate = async (model_arguments, validator, mongoModel) => {
-  await validator.validateAsync(model_arguments);
+  await validator.validate(model_arguments);
   return await (await new mongoModel(model_arguments)).save();
 };
 

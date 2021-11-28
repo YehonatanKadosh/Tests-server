@@ -21,8 +21,8 @@ app.use(express.json());
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/user", userRouter);
-app.use("/user", topicRouter);
-app.use("/user", tagRouter);
+app.use("/topic", topicRouter);
+app.use("/tag", tagRouter);
 
 // errors handler
 app.use((err, req, res, next) => {

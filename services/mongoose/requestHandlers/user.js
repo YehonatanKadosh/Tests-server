@@ -1,7 +1,6 @@
-const { userModel, user_validator } = require("../models/user");
 const { genericCreate, genericGet, genericUpdate } = require("./generiCRUD");
 const { encryptPassword } = require("../../bcrypt");
-const { roles } = require("../enums");
+const { userModel, user_validator, roles } = require("queezy-common");
 
 const findUserById = async (_id) => await genericGet(_id, userModel);
 

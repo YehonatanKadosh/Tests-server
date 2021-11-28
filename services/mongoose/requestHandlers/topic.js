@@ -1,5 +1,5 @@
 const { genericCreate, genericUpdate } = require("./generiCRUD");
-const { topicModel, topic_validator } = require("../models/topic");
+const { topicModel, topic_validator } = require("queezy-common");
 
 const createTopic = async (topic) =>
   await genericCreate(topic, topic_validator, topicModel);

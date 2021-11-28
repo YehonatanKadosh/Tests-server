@@ -1,16 +1,14 @@
 const express = require("express");
-const auth = require("../../services/authentication/auth");
-const { newJsonWebToken } = require("../../services/JWT");
-const login = require("../../services/mongoose/requestHandlers/login");
+const auth = require("../services/authentication/auth");
+const { newJsonWebToken } = require("../services/JWT");
+const login = require("../services/mongoose/requestHandlers/login");
 const loginRouter = express.Router();
-const login_validator = require("./login.validator");
-const {
-  findUserById,
-} = require("../../services/mongoose/requestHandlers/user");
+const { login_validator } = require("queezy-common");
+const { findUserById } = require("../services/mongoose/requestHandlers/user");
 
 loginRouter.post("/", async (req, res, next) => {
   try {
-    await login_validator.validateAsync(req.body);
+    await login_validator.validate(req.body);
     const user = await login(req.body);
     const jwt = newJsonWebToken(user);
     const { firstName, lastName, role } = user;

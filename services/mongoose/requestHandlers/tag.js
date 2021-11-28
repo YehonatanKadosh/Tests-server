@@ -1,8 +1,12 @@
 const { genericCreate, genericUpdate } = require("./generiCRUD");
-const { tagModel, tag_validator } = require("../models/tag");
+const { tagModel, tag_validator } = require("queezy-common");
 
 const createTag = async (tag) =>
-  await genericCreate(tag, tag_validator, tagModel);
+  await genericCreate(
+    { ...tag, topics: tag.topics.map((topic) => topic._id) },
+    tag_validator,
+    tagModel
+  );
 
 const findAllTags = async () => await tagModel.find({});
 
