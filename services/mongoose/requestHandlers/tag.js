@@ -1,5 +1,6 @@
 import { genericCreate, genericUpdate } from "./generiCRUD.js";
-import { tagModel, tag_validator } from "queezy-common";
+import { tag_validator } from "queezy-common";
+import tagModel from "../models/tag.js";
 
 export const createTag = async (tag) =>
   await genericCreate(

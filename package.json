@@ -19,6 +19,6 @@
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.13",
-    "queezy-common": "^1.3.0"
+    "queezy-common": "^1.3.1"
   }
 }

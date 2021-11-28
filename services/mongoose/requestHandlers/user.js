@@ -1,6 +1,7 @@
 import { genericCreate, genericGet, genericUpdate } from "./generiCRUD.js";
 import { encryptPassword } from "../../bcrypt.js";
-import { userModel, user_validator, roles } from "queezy-common";
+import { roles, user_validator } from "queezy-common";
+import userModel from "../models/user.js";
 
 export const findUserById = async (_id) => await genericGet(_id, userModel);
 

@@ -1,5 +1,6 @@
 import { genericCreate, genericUpdate } from "./generiCRUD.js";
-import { topicModel, topic_validator } from "queezy-common";
+import { topic_validator } from "queezy-common";
+import topicModel from "../models/topic.js";
 
 export const createTopic = async (topic) =>
   await genericCreate(topic, topic_validator, topicModel);
