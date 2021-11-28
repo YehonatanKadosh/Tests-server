@@ -1,12 +1,13 @@
-const { genericCreate, genericGet, genericUpdate } = require("./generiCRUD");
-const { encryptPassword } = require("../../bcrypt");
-const { userModel, user_validator, roles } = require("queezy-common");
+import { genericCreate, genericGet, genericUpdate } from "./generiCRUD.js";
+import { encryptPassword } from "../../bcrypt.js";
+import { userModel, user_validator, roles } from "queezy-common";
 
-const findUserById = async (_id) => await genericGet(_id, userModel);
+export const findUserById = async (_id) => await genericGet(_id, userModel);
 
-const findUserByEmail = async (email) => await userModel.findOne({ email });
+export const findUserByEmail = async (email) =>
+  await userModel.findOne({ email });
 
-const createUser = async (user) =>
+export const createUser = async (user) =>
   await genericCreate(
     {
       ...user,
@@ -17,17 +18,9 @@ const createUser = async (user) =>
     userModel
   );
 
-const removeUser = async (_id) => await userModel.deleteOne({ _id });
+export const removeUser = async (_id) => await userModel.deleteOne({ _id });
 
-const findAllUsers = async () => await userModel.find({});
+export const findAllUsers = async () => await userModel.find({});
 
-const updateUser = async (_id) => await genericUpdate(_id, {}, userModel);
-
-module.exports = {
-  findUserById,
-  findUserByEmail,
-  createUser,
-  removeUser,
-  findAllUsers,
-  updateUser,
-};
+export const updateUser = async (_id) =>
+  await genericUpdate(_id, {}, userModel);

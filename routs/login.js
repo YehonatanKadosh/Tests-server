@@ -1,10 +1,10 @@
-const express = require("express");
-const auth = require("../services/authentication/auth");
-const { newJsonWebToken } = require("../services/JWT");
-const login = require("../services/mongoose/requestHandlers/login");
+import express from "express";
+import auth from "../services/authentication/auth.js";
+import { newJsonWebToken } from "../services/JWT.js";
+import login from "../services/mongoose/requestHandlers/login.js";
 const loginRouter = express.Router();
-const { login_validator } = require("queezy-common");
-const { findUserById } = require("../services/mongoose/requestHandlers/user");
+import { login_validator } from "queezy-common";
+import { findUserById } from "../services/mongoose/requestHandlers/user.js";
 
 loginRouter.post("/", async (req, res, next) => {
   try {
@@ -26,4 +26,4 @@ loginRouter.get("/", auth, async (req, res, next) => {
   res.send({ firstName, lastName, role });
 });
 
-module.exports = loginRouter;
+export default loginRouter;

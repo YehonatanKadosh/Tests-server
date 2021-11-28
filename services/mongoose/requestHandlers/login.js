@@ -1,5 +1,5 @@
-const { passwordIsValid } = require("../../bcrypt");
-const { findUserByEmail } = require("./user");
+import { passwordIsValid } from "../../bcrypt.js";
+import { findUserByEmail } from "./user.js";
 
 const login = ({ email, password }) =>
   new Promise(async (resolve, reject) => {
@@ -11,4 +11,4 @@ const login = ({ email, password }) =>
     }
   });
 
-module.exports = login;
+export default login;

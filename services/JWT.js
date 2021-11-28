@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
-const newJsonWebToken = ({ id, role }) =>
+export const newJsonWebToken = ({ id, role }) =>
   jwt.sign({ id, role }, process.env.JSONWEBTOKENS);
 
-const verifyJsonWebToken = async (token) => {
+export const verifyJsonWebToken = async (token) => {
   return new Promise((res, rej) => {
     jwt.verify(token, process.env.JSONWEBTOKENS, (err, decoded) => {
       if (decoded) res(decoded);
@@ -11,5 +11,3 @@ const verifyJsonWebToken = async (token) => {
     });
   });
 };
-
-module.exports = { newJsonWebToken, verifyJsonWebToken };
