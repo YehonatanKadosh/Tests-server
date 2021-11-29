@@ -6,6 +6,7 @@ const {
   findAllTopics,
   createTopic,
 } = require("../services/mongoose/requestHandlers/topic");
+const { findUserById } = require("../services/mongoose/requestHandlers/user");
 
 topicRouter.get("/", [auth, admin], async (req, res, next) =>
   res.send(await findAllTopics())
@@ -13,7 +14,9 @@ topicRouter.get("/", [auth, admin], async (req, res, next) =>
 
 topicRouter.post("/", [auth, admin], async (req, res, next) => {
   try {
-    res.send(await createTopic(req.body));
+    const user = await findUserById(req.user.id);
+    const account = user.accounts[0];
+    res.send(await createTopic({ ...req.body, account }));
   } catch (error) {
     next(error);
   }
