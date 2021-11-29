@@ -1,4 +1,4 @@
-import { verifyJsonWebToken } from "../JWT.js";
+const { verifyJsonWebToken } = require("../JWT");
 
 const auth = async (req, res, next) => {
   const Token = req.headers[process.env.JWTHeaderName];
@@ -11,4 +11,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-export default auth;
+module.exports = auth;

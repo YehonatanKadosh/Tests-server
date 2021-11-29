@@ -1,14 +1,14 @@
-import { genericCreate, genericUpdate } from "./generiCRUD.js";
-import { topic_validator } from "queezy-common";
-import topicModel from "../models/topic.js";
+const { genericCreate, genericUpdate } = require("./generiCRUD");
+const { topic_validator } = require("queezy-common");
+const topicModel = require("../models/topic");
 
-export const createTopic = async (topic) =>
+module.exports.createTopic = async (topic) =>
   await genericCreate(topic, topic_validator, topicModel);
 
-export const findAllTopics = async () => await topicModel.find({});
+module.exports.findAllTopics = async () => await topicModel.find({});
 
-export const updateTopic = async (_id) =>
+module.exports.updateTopic = async (_id) =>
   await genericUpdate(_id, {}, topicModel);
 
-export const removeTopic = async (_id) =>
+module.exports.removeTopic = async (_id) =>
   await topicModel.findByIdAndRemove({ _id });

@@ -1,5 +1,4 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
+const { model, Schema } = require("mongoose");
 
 const topicSchema = new Schema({
   name: { type: String },
@@ -8,4 +7,4 @@ const topicSchema = new Schema({
 
 const topicModel = model("topic", topicSchema);
 
-export default topicModel;
+module.exports = topicModel;

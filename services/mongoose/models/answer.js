@@ -1,5 +1,4 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
+const { model, Schema } = require("mongoose");
 
 const answerSchema = new Schema({
   content: String,
@@ -8,4 +7,4 @@ const answerSchema = new Schema({
 
 const answerModel = model("answer", answerSchema);
 
-export default answerModel;
+module.exports = answerModel;

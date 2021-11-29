@@ -1,7 +1,6 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
-import { questionTypes, orientationTypes } from "../index.js";
-import answerModule from "./answer.js";
+const { model, Schema } = require("mongoose");
+const { questionTypes, orientationTypes } = require("..");
+const answerModule = require("./answer");
 
 const questionSchema = new Schema({
   type: { type: String, enum: questionTypes },
@@ -21,4 +20,4 @@ const questionSchema = new Schema({
 
 const questionModel = model("question", questionSchema);
 
-export default questionModel;
+module.exports = questionModel;

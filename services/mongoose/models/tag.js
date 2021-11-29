@@ -1,5 +1,4 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
+const { model, Schema } = require("mongoose");
 
 const tagSchema = new Schema({
   name: { type: String, unique: true },
@@ -8,4 +7,4 @@ const tagSchema = new Schema({
 
 const tagModel = model("tag", tagSchema);
 
-export default tagModel;
+module.exports = tagModel;

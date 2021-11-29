@@ -1,6 +1,5 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
-import { languages } from "../index.js";
+const { model, Schema } = require("mongoose");
+const { languages } = require("..");
 
 const queezSchema = new Schema({
   language: { type: String, enum: languages },
@@ -25,4 +24,4 @@ const queezSchema = new Schema({
 
 const queezModel = model("queez", queezSchema);
 
-export default queezModel;
+module.exports = queezModel;

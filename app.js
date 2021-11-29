@@ -1,16 +1,16 @@
 // config
-import {} from "dotenv/config";
-import express from "express";
-import cors from "cors";
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 4000;
 
 // routers
-import loginRouter from "./routs/login.js";
-import signupRouter from "./routs/signup.js";
-import userRouter from "./routs/user.js";
-import topicRouter from "./routs/topic.js";
-import tagRouter from "./routs/tag.js";
+const loginRouter = require("./routs/login");
+const signupRouter = require("./routs/signup");
+const userRouter = require("./routs/user");
+const topicRouter = require("./routs/topic");
+const tagRouter = require("./routs/tag");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -39,4 +39,4 @@ app.listen(port, () => {
   console.log(`app is up on port ${port}`);
 });
 
-import "./services/mongoose/connect.js";
+require("./services/mongoose/connect");

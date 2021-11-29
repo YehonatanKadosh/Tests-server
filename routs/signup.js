@@ -1,6 +1,6 @@
-import express from "express";
-import { newJsonWebToken } from "../services/JWT.js";
-import { createUser } from "../services/mongoose/requestHandlers/user.js";
+const express = require("express");
+const { newJsonWebToken } = require("../services/JWT");
+const { createUser } = require("../services/mongoose/requestHandlers/user");
 const signupRouter = express.Router();
 
 signupRouter.post("/", async (req, res, next) => {
@@ -17,4 +17,4 @@ signupRouter.post("/", async (req, res, next) => {
   }
 });
 
-export default signupRouter;
+module.exports = signupRouter;

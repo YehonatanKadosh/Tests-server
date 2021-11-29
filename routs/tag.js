@@ -1,10 +1,10 @@
-import express from "express";
-import admin from "../services/authentication/admin.js";
-import auth from "../services/authentication/auth.js";
-import {
+const express = require("express");
+const admin = require("../services/authentication/admin");
+const auth = require("../services/authentication/auth");
+const {
   findAllTags,
   createTag,
-} from "../services/mongoose/requestHandlers/tag.js";
+} = require("../services/mongoose/requestHandlers/tag");
 const tagRouter = express.Router();
 
 tagRouter.get("/", [auth, admin], async (req, res, next) =>
@@ -19,4 +19,4 @@ tagRouter.post("/", [auth, admin], async (req, res, next) => {
   }
 });
 
-export default tagRouter;
+module.exports = tagRouter;

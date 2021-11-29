@@ -1,11 +1,11 @@
-import express from "express";
+const express = require("express");
 const topicRouter = express.Router();
-import admin from "../services/authentication/admin.js";
-import auth from "../services/authentication/auth.js";
-import {
+const admin = require("../services/authentication/admin");
+const auth = require("../services/authentication/auth");
+const {
   findAllTopics,
   createTopic,
-} from "../services/mongoose/requestHandlers/topic.js";
+} = require("../services/mongoose/requestHandlers/topic");
 
 topicRouter.get("/", [auth, admin], async (req, res, next) =>
   res.send(await findAllTopics())
@@ -19,4 +19,4 @@ topicRouter.post("/", [auth, admin], async (req, res, next) => {
   }
 });
 
-export default topicRouter;
+module.exports = topicRouter;

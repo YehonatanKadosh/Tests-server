@@ -1,5 +1,4 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
+const { model, Schema } = require("mongoose");
 
 const queezRecordSchema = new Schema({
   queez: String,
@@ -12,4 +11,4 @@ const queezRecordSchema = new Schema({
 
 const queezRecordModel = model("queezRecord", queezRecordSchema);
 
-export default queezRecordModel;
+module.exports = queezRecordModel;

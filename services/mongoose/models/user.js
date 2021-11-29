@@ -1,6 +1,5 @@
-import pkg from "mongoose";
-const { model, Schema } = pkg;
-import { roles } from "queezy-common";
+const { model, Schema } = require("mongoose");
+const { roles } = require("queezy-common");
 
 const userSchema = new Schema({
   email: { type: String, unique: true },
@@ -14,4 +13,4 @@ const userSchema = new Schema({
 
 const userModel = model("user", userSchema);
 
-export default userModel;
+module.exports = userModel;
