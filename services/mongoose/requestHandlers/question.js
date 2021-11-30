@@ -1,14 +1,59 @@
-const { genericCreate, genericUpdate } = require("./generiCRUD");
+const { genericCreate } = require("./generiCRUD");
 const { question_validator } = require("queezy-common");
 const questionModel = require("../models/question");
 
-module.exports.createQuestion = async (question) =>
-  await genericCreate(question, question_validator, questionModel);
+const createQuestion = async (question) =>
+  await genericCreate(
+    { ...question, replaced: false },
+    question_validator,
+    questionModel
+  );
 
-module.exports.findAllQuestions = async () => await questionModel.find({});
+const findAllQuestions = async () =>
+  await questionModel.find({ replaced: false });
 
-module.exports.updateQuestion = async (_id) =>
-  await genericUpdate(_id, {}, questionModel);
+const updateQuestion = async (newquestion) => {
+  const question = await questionModel.findOne({ _id: newquestion._id });
+  Object.assign(question, newquestion);
+  return await question.save();
+};
 
-module.exports.removeQuestion = async (_id) =>
+const newQuestionsVersion = async (Q) => {
+  const oldQ = await questionModel.findOne({ _id: Q._id });
+  oldQ.replaced = true;
+  await oldQ.save();
+  const {
+    type,
+    question,
+    context,
+    answers,
+    orientation,
+    tags,
+    topics,
+    lastUpdated,
+    version,
+  } = Q;
+  return await createQuestion({
+    type,
+    question,
+    context,
+    answers,
+    orientation,
+    tags,
+    topics,
+    lastUpdated,
+    version,
+  });
+};
+
+const removeQuestion = async ({ _id }) =>
   await questionModel.findByIdAndRemove({ _id });
+
+module.exports = {
+  createQuestion,
+  newQuestionsVersion,
+  updateQuestion,
+  removeQuestion,
+  updateQuestion,
+  findAllQuestions,
+};

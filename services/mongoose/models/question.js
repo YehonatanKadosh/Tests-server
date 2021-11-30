@@ -16,6 +16,7 @@ const questionSchema = new Schema({
   topics: [{ type: String }],
   lastUpdated: Date,
   version: Number,
+  replaced: { type: Boolean, default: false },
 });
 
 const questionModel = model("question", questionSchema);

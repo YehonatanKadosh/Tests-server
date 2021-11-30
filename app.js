@@ -28,17 +28,13 @@ app.use("/question", questionRouter);
 
 // errors handler
 app.use((err, req, res, next) => {
-  res.status(400).send(err);
   console.log(err);
+  res.status(400).send(err);
 });
 
 // general handler
-app.get("*", (req, res, next) => {
-  res.send("database is up and running");
-});
+app.get("*", (req, res, next) => res.send("database is up and running"));
 
-app.listen(port, () => {
-  console.log(`app is up on port ${port}`);
-});
+app.listen(port, () => console.log(`app is up on port ${port}`));
 
 require("./services/mongoose/connect");
