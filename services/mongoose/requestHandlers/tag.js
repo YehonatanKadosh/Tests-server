@@ -3,11 +3,7 @@ const { tag_validator } = require("queezy-common");
 const tagModel = require("../models/tag");
 
 module.exports.createTag = async (tag) =>
-  await genericCreate(
-    { ...tag, topics: tag.topics.map((topic) => topic._id) },
-    tag_validator,
-    tagModel
-  );
+  await genericCreate(tag, tag_validator, tagModel);
 
 module.exports.findAllTags = async () => await tagModel.find({});
 

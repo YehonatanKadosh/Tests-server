@@ -11,6 +11,7 @@ const signupRouter = require("./routs/signup");
 const userRouter = require("./routs/user");
 const topicRouter = require("./routs/topic");
 const tagRouter = require("./routs/tag");
+const questionRouter = require("./routs/question");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -23,6 +24,7 @@ app.use("/signup", signupRouter);
 app.use("/user", userRouter);
 app.use("/topic", topicRouter);
 app.use("/tag", tagRouter);
+app.use("/question", questionRouter);
 
 // errors handler
 app.use((err, req, res, next) => {

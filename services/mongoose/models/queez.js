@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const { languages } = require("..");
+const { languages } = require("queezy-common");
 
 const queezSchema = new Schema({
   language: { type: String, enum: languages },

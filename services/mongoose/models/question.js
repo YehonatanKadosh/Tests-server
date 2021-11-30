@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const { questionTypes, orientationTypes } = require("..");
+const { questionTypes, orientationTypes } = require("queezy-common");
 const answerModule = require("./answer");
 
 const questionSchema = new Schema({
