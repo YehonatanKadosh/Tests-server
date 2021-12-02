@@ -3,10 +3,10 @@ const admin = require("../services/authentication/admin");
 const auth = require("../services/authentication/auth");
 const {
   createQuestion,
-  findAllQuestions,
   updateQuestion,
   newQuestionsVersion,
   removeQuestion,
+  findQuestionsByTopic,
 } = require("../services/mongoose/requestHandlers/question");
 const questionRouter = express.Router();
 
@@ -27,9 +27,10 @@ questionRouter.put("/", [auth, admin], async (req, res, next) => {
   }
 });
 
-questionRouter.get("/", [auth, admin], async (req, res, next) =>
-  res.send(await findAllQuestions())
-);
+questionRouter.get("/", [auth, admin], async (req, res, next) => {
+  if (req.query.topic) res.send(await findQuestionsByTopic(req.query.topic));
+  else next("no topics provided");
+});
 
 questionRouter.delete("/", [auth, admin], async (req, res, next) =>
   res.send({ ...(await removeQuestion(req.body)), ...req.body })

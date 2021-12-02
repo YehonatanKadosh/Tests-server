@@ -9,7 +9,8 @@ module.exports.createTag = async (tag) =>
     tagModel
   );
 
-module.exports.findAllTags = async () => await tagModel.find({});
+module.exports.findTagsByTopics = async (topics) =>
+  await tagModel.find({ topics: { $elemMatch: { $in: topics } } });
 
 module.exports.updateTag = async (_id) =>
   await genericUpdate(_id, {}, tagModel);
