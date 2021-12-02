@@ -12,6 +12,9 @@ const createQuestion = async (question) =>
 const findQuestionsByTopic = async (topic) =>
   await questionModel.find({ topics: topic, replaced: false });
 
+const findQuestionsByTopicAndTag = async (topic, tag) =>
+  await questionModel.find({ topics: topic, replaced: false, tags: tag });
+
 const updateQuestion = async (newquestion) => {
   const question = await questionModel.findOne({ _id: newquestion._id });
   Object.assign(question, newquestion);
@@ -56,4 +59,5 @@ module.exports = {
   removeQuestion,
   updateQuestion,
   findQuestionsByTopic,
+  findQuestionsByTopicAndTag,
 };
