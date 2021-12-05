@@ -1,10 +1,13 @@
 const pkg = require("mongoose");
+const logger = require("../logger");
 const { connect } = pkg;
 
-connect(process.env.MongoKEY || "").then((mongoose) => {
-  mongoose.connection.on("disconnecting", () =>
-    console.log("mongoDB disconnected")
-  );
+connect(process.env.MongoKEY || "")
+  .then((mongoose) => {
+    mongoose.connection.on("disconnecting", (disconnected) =>
+      logger.error("mongoDB disconnected", disconnected)
+    );
 
-  console.log("mongoDb connected");
-});
+    logger.info("mongoDb connected");
+  })
+  .catch(logger.error);

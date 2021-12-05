@@ -12,6 +12,7 @@ const userRouter = require("./routs/user");
 const topicRouter = require("./routs/topic");
 const tagRouter = require("./routs/tag");
 const questionRouter = require("./routs/question");
+const { default: logger } = require("./services/logger");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -28,7 +29,7 @@ app.use("/question", questionRouter);
 
 // errors handler
 app.use((err, req, res, next) => {
-  console.log(err);
+  logger.error(err);
   res.status(400).send(err);
 });
 
