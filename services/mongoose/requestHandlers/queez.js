@@ -5,10 +5,12 @@ const { getTopicById } = require("./topic");
 const { getQuestionsByIds } = require("./question");
 
 const createQueez = async (queez) =>
-  await genericCreate(
-    { ...queez, replaced: false },
-    queez_validator,
-    queezModel
+  await getQueezReady(
+    await genericCreate(
+      { ...queez, replaced: false },
+      queez_validator,
+      queezModel
+    )
   );
 
 const findQueezsByTopic = async (topic) => {
@@ -17,15 +19,19 @@ const findQueezsByTopic = async (topic) => {
   return await getQueezesReady(Queezes);
 };
 
+const getQueezReady = async (Queez) => {
+  const questions = await getQuestionsByIds(Queez.questions);
+  const topic = await getTopicById(Queez.topic);
+  return { ...Queez._doc, questions, topic };
+};
+
 const getQueezesReady = async (Queezes) =>
   new Promise(async (res, rej) => {
     try {
       const ReadyQueezes = [];
       let index = 0;
       Queezes.forEach(async (Q) => {
-        const questions = await getQuestionsByIds(Q.questions);
-        const topic = await getTopicById(Q.topic);
-        ReadyQueezes.push({ ...Q._doc, questions, topic });
+        ReadyQueezes.push(await getQueezReady(Q));
         index += 1;
         if (index === Queezes.length) res(ReadyQueezes);
       });
@@ -37,7 +43,7 @@ const getQueezesReady = async (Queezes) =>
 const updateQueez = async (newqueez) => {
   const queez = await queezModel.findOne({ _id: newqueez._id });
   Object.assign(queez, newqueez);
-  return await queez.save();
+  return await getQueezReady(await queez.save());
 };
 
 const newQueezsVersion = async (Q) => {
@@ -62,24 +68,26 @@ const newQueezsVersion = async (Q) => {
     failEmailSubject,
     failEmailMessage,
   } = Q;
-  return await createQueez({
-    language,
-    name,
-    questions,
-    introduction,
-    queezenerEmail,
-    passingScore,
-    answersReview,
-    certificateURL,
-    topic,
-    successMessage,
-    failMessage,
-    version,
-    successEmailSubject,
-    successEmailMessage,
-    failEmailSubject,
-    failEmailMessage,
-  });
+  return await getQueezReady(
+    await createQueez({
+      language,
+      name,
+      questions,
+      introduction,
+      queezenerEmail,
+      passingScore,
+      answersReview,
+      certificateURL,
+      topic,
+      successMessage,
+      failMessage,
+      version,
+      successEmailSubject,
+      successEmailMessage,
+      failEmailSubject,
+      failEmailMessage,
+    })
+  );
 };
 
 const removeQueez = async ({ _id }) =>

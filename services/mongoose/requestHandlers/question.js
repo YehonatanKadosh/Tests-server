@@ -5,10 +5,12 @@ const { getTopicsByIds } = require("./topic");
 const { getTagsByIds } = require("./tag");
 
 const createQuestion = async (question) =>
-  await genericCreate(
-    { ...question, replaced: false },
-    question_validator,
-    questionModel
+  await getQuestionReady(
+    await genericCreate(
+      { ...question, replaced: false },
+      question_validator,
+      questionModel
+    )
   );
 
 const findQuestionsByTopic = async (topic) => {
@@ -20,15 +22,19 @@ const findQuestionsByTopic = async (topic) => {
   else return await getQuestionsReady(Questions);
 };
 
+const getQuestionReady = async (Question) => {
+  const tags = await getTagsByIds(Question.tags);
+  const topics = await getTopicsByIds(Question.topics);
+  return { ...Question._doc, tags, topics };
+};
+
 const getQuestionsReady = async (Questions) =>
   new Promise(async (res, rej) => {
     try {
       const ReadyQuestions = [];
       let index = 0;
       Questions.forEach(async (Q) => {
-        const tags = await getTagsByIds(Q.tags);
-        const topics = await getTopicsByIds(Q.topics);
-        ReadyQuestions.push({ ...Q._doc, tags, topics });
+        ReadyQuestions.push(await getQuestionReady(Q));
         index += 1;
         if (index === Questions.length) res(ReadyQuestions);
       });
@@ -50,7 +56,7 @@ const findQuestionsByTopicAndTag = async (topic, tag) => {
 const updateQuestion = async (newquestion) => {
   const question = await questionModel.findOne({ _id: newquestion._id });
   Object.assign(question, newquestion);
-  return await question.save();
+  return await getQuestionReady(await question.save());
 };
 
 const newQuestionsVersion = async (Q) => {
@@ -68,21 +74,23 @@ const newQuestionsVersion = async (Q) => {
     lastUpdated,
     version,
   } = Q;
-  return await createQuestion({
-    type,
-    question,
-    context,
-    answers,
-    orientation,
-    tags,
-    topics,
-    lastUpdated,
-    version,
-  });
+  return await getQuestionReady(
+    await createQuestion({
+      type,
+      question,
+      context,
+      answers,
+      orientation,
+      tags,
+      topics,
+      lastUpdated,
+      version,
+    })
+  );
 };
 
 const getQuestionsByIds = async (ids) =>
-  await questionModel.find({ _id: { $in: ids } });
+  await getQuestionReady(await questionModel.find({ _id: { $in: ids } }));
 
 const removeQuestion = async ({ _id }) =>
   await questionModel.findByIdAndRemove({ _id });
