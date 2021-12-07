@@ -17,3 +17,6 @@ module.exports.updateTag = async (_id) =>
 
 module.exports.removeTag = async (_id) =>
   await tagModel.findByIdAndRemove({ _id });
+
+module.exports.getTagsByIds = async (ids) =>
+  await tagModel.find({ _id: { $in: ids } });

@@ -14,6 +14,7 @@ const queezSchema = new Schema({
   successMessage: String,
   failMessage: String,
   version: Number,
+  replaced: Boolean,
 
   // mailing handler
   successEmailSubject: String,

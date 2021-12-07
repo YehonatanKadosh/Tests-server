@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 4000;
+const logger = require("./services/logger");
 
 // routers
 const loginRouter = require("./routs/login");
@@ -12,7 +13,7 @@ const userRouter = require("./routs/user");
 const topicRouter = require("./routs/topic");
 const tagRouter = require("./routs/tag");
 const questionRouter = require("./routs/question");
-const { default: logger } = require("./services/logger");
+const queezRouter = require("./routs/queez");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -26,6 +27,7 @@ app.use("/user", userRouter);
 app.use("/topic", topicRouter);
 app.use("/tag", tagRouter);
 app.use("/question", questionRouter);
+app.use("/queez", queezRouter);
 
 // errors handler
 app.use((err, req, res, next) => {

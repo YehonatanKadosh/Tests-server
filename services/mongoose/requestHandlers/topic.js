@@ -12,3 +12,8 @@ module.exports.updateTopic = async (_id) =>
 
 module.exports.removeTopic = async (_id) =>
   await topicModel.findByIdAndRemove({ _id });
+
+module.exports.getTopicsByIds = async (ids) =>
+  await topicModel.find({ _id: { $in: ids } });
+
+module.exports.getTopicById = async (_id) => await topicModel.findOne({ _id });

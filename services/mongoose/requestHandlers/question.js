@@ -1,6 +1,8 @@
 const { genericCreate } = require("./generiCRUD");
 const { question_validator } = require("queezy-common");
 const questionModel = require("../models/question");
+const { getTopicsByIds } = require("./topic");
+const { getTagsByIds } = require("./tag");
 
 const createQuestion = async (question) =>
   await genericCreate(
@@ -9,11 +11,41 @@ const createQuestion = async (question) =>
     questionModel
   );
 
-const findQuestionsByTopic = async (topic) =>
-  await questionModel.find({ topics: topic, replaced: false });
+const findQuestionsByTopic = async (topic) => {
+  const Questions = await questionModel.find({
+    topics: topic,
+    replaced: false,
+  });
+  if (!Questions.length) return Questions;
+  else return await getQuestionsReady(Questions);
+};
 
-const findQuestionsByTopicAndTag = async (topic, tag) =>
-  await questionModel.find({ topics: topic, replaced: false, tags: tag });
+const getQuestionsReady = async (Questions) =>
+  new Promise(async (res, rej) => {
+    try {
+      const ReadyQuestions = [];
+      let index = 0;
+      Questions.forEach(async (Q) => {
+        const tags = await getTagsByIds(Q.tags);
+        const topics = await getTopicsByIds(Q.topics);
+        ReadyQuestions.push({ ...Q._doc, tags, topics });
+        index += 1;
+        if (index === Questions.length) res(ReadyQuestions);
+      });
+    } catch (error) {
+      rej(error);
+    }
+  });
+
+const findQuestionsByTopicAndTag = async (topic, tag) => {
+  const Questions = await questionModel.find({
+    topics: topic,
+    replaced: false,
+    tags: tag,
+  });
+  if (!Questions.length) return Questions;
+  else return await getQuestionsReady(Questions);
+};
 
 const updateQuestion = async (newquestion) => {
   const question = await questionModel.findOne({ _id: newquestion._id });
@@ -49,6 +81,9 @@ const newQuestionsVersion = async (Q) => {
   });
 };
 
+const getQuestionsByIds = async (ids) =>
+  await questionModel.find({ _id: { $in: ids } });
+
 const removeQuestion = async ({ _id }) =>
   await questionModel.findByIdAndRemove({ _id });
 
@@ -60,4 +95,5 @@ module.exports = {
   updateQuestion,
   findQuestionsByTopic,
   findQuestionsByTopicAndTag,
+  getQuestionsByIds,
 };
