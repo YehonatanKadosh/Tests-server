@@ -1,5 +1,5 @@
 const { genericCreate, genericUpdate } = require("./generiCRUD");
-const { topic_validator } = require("queezy-common");
+const { topic_validator } = require("quizy-yk-common");
 const topicModel = require("../models/topic");
 
 module.exports.createTopic = async (topic) =>

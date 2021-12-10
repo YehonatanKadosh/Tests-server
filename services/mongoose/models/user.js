@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const { roles } = require("queezy-common");
+const { roles } = require("quizy-yk-common");
 
 const userSchema = new Schema({
   email: { type: String, unique: true },

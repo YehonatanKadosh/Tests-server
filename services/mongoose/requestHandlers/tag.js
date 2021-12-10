@@ -1,5 +1,5 @@
 const { genericCreate, genericUpdate } = require("./generiCRUD");
-const { tag_validator } = require("queezy-common");
+const { tag_validator } = require("quizy-yk-common");
 const tagModel = require("../models/tag");
 
 module.exports.createTag = async (tag) =>

@@ -3,7 +3,7 @@ const auth = require("../services/authentication/auth");
 const { newJsonWebToken } = require("../services/JWT");
 const login = require("../services/mongoose/requestHandlers/login");
 const loginRouter = express.Router();
-const { login_validator } = require("queezy-common");
+const { login_validator } = require("quizy-yk-common");
 const { findUserById } = require("../services/mongoose/requestHandlers/user");
 
 loginRouter.post("/", async (req, res, next) => {

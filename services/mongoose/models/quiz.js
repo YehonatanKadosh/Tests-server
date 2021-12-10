@@ -1,12 +1,12 @@
 const { model, Schema } = require("mongoose");
-const { languages } = require("queezy-common");
+const { languages } = require("quizy-yk-common");
 
-const queezSchema = new Schema({
+const quizSchema = new Schema({
   language: { type: String, enum: languages },
   name: { type: String, maxlength: 200 },
   questions: [{ type: String }],
   introduction: String,
-  queezenerEmail: String,
+  quizenerEmail: String,
   passingScore: Number,
   answersReview: Boolean,
   certificateURL: String,
@@ -23,6 +23,6 @@ const queezSchema = new Schema({
   failEmailMessage: String,
 });
 
-const queezModel = model("queez", queezSchema);
+const quizModel = model("quiz", quizSchema);
 
-module.exports = queezModel;
+module.exports = quizModel;

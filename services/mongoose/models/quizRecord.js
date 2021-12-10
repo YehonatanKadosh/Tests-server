@@ -1,8 +1,8 @@
 const { model, Schema } = require("mongoose");
 const answersModel = require("./answers");
 
-const queezRecordSchema = new Schema({
-  queez: String,
+const quizRecordSchema = new Schema({
+  quiz: String,
   user: String,
   finalScore: Number,
   questionsAnswered: Number,
@@ -10,6 +10,6 @@ const queezRecordSchema = new Schema({
   date: Date,
 });
 
-const queezRecordModel = model("queezRecord", queezRecordSchema);
+const quizRecordModel = model("quizRecord", quizRecordSchema);
 
-module.exports = queezRecordModel;
+module.exports = quizRecordModel;

@@ -13,7 +13,7 @@ const userRouter = require("./routs/user");
 const topicRouter = require("./routs/topic");
 const tagRouter = require("./routs/tag");
 const questionRouter = require("./routs/question");
-const queezRouter = require("./routs/queez");
+const quizRouter = require("./routs/quiz");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -27,7 +27,7 @@ app.use("/user", userRouter);
 app.use("/topic", topicRouter);
 app.use("/tag", tagRouter);
 app.use("/question", questionRouter);
-app.use("/queez", queezRouter);
+app.use("/quiz", quizRouter);
 
 // errors handler
 app.use((err, req, res, next) => {

@@ -1,6 +1,6 @@
 const { genericCreate, genericGet, genericUpdate } = require("./generiCRUD");
 const { encryptPassword } = require("../../bcrypt");
-const { roles, user_validator } = require("queezy-common");
+const { roles, user_validator } = require("quizy-yk-common");
 const userModel = require("../models/user");
 
 module.exports.findUserById = async (_id) => await genericGet(_id, userModel);

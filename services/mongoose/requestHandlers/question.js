@@ -1,5 +1,5 @@
 const { genericCreate } = require("./generiCRUD");
-const { question_validator } = require("queezy-common");
+const { question_validator } = require("quizy-yk-common");
 const questionModel = require("../models/question");
 const { getTopicsByIds } = require("./topic");
 const { getTagsByIds } = require("./tag");
