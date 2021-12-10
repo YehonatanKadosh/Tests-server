@@ -74,23 +74,23 @@ const newQuestionsVersion = async (Q) => {
     lastUpdated,
     version,
   } = Q;
-  return await getQuestionReady(
-    await createQuestion({
-      type,
-      question,
-      context,
-      answers,
-      orientation,
-      tags,
-      topics,
-      lastUpdated,
-      version,
-    })
-  );
+
+  const newQuestion = await createQuestion({
+    type,
+    question,
+    context,
+    answers,
+    orientation,
+    tags,
+    topics,
+    lastUpdated,
+    version,
+  });
+  return newQuestion;
 };
 
 const getQuestionsByIds = async (ids) =>
-  await getQuestionReady(await questionModel.find({ _id: { $in: ids } }));
+  await questionModel.find({ _id: { $in: ids } });
 
 const removeQuestion = async ({ _id }) =>
   await questionModel.findByIdAndRemove({ _id });
@@ -104,4 +104,5 @@ module.exports = {
   findQuestionsByTopic,
   findQuestionsByTopicAndTag,
   getQuestionsByIds,
+  getQuestionsReady,
 };

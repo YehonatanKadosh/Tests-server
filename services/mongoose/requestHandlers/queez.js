@@ -2,7 +2,7 @@ const { genericCreate } = require("./generiCRUD");
 const { queez_validator } = require("queezy-common");
 const queezModel = require("../models/queez");
 const { getTopicById } = require("./topic");
-const { getQuestionsByIds } = require("./question");
+const { getQuestionsByIds, getQuestionsReady } = require("./question");
 
 const createQueez = async (queez) =>
   await getQueezReady(
@@ -20,9 +20,13 @@ const findQueezsByTopic = async (topic) => {
 };
 
 const getQueezReady = async (Queez) => {
-  const questions = await getQuestionsByIds(Queez.questions);
+  const Questions = await getQuestionsByIds(Queez.questions);
   const topic = await getTopicById(Queez.topic);
-  return { ...Queez._doc, questions, topic };
+  return {
+    ...Queez._doc,
+    questions: await getQuestionsReady(Questions),
+    topic,
+  };
 };
 
 const getQueezesReady = async (Queezes) =>
@@ -68,26 +72,24 @@ const newQueezsVersion = async (Q) => {
     failEmailSubject,
     failEmailMessage,
   } = Q;
-  return await getQueezReady(
-    await createQueez({
-      language,
-      name,
-      questions,
-      introduction,
-      queezenerEmail,
-      passingScore,
-      answersReview,
-      certificateURL,
-      topic,
-      successMessage,
-      failMessage,
-      version,
-      successEmailSubject,
-      successEmailMessage,
-      failEmailSubject,
-      failEmailMessage,
-    })
-  );
+  return await createQueez({
+    language,
+    name,
+    questions,
+    introduction,
+    queezenerEmail,
+    passingScore,
+    answersReview,
+    certificateURL,
+    topic,
+    successMessage,
+    failMessage,
+    version,
+    successEmailSubject,
+    successEmailMessage,
+    failEmailSubject,
+    failEmailMessage,
+  });
 };
 
 const removeQueez = async ({ _id }) =>
