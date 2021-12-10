@@ -9,6 +9,6 @@ module.exports.genericCreate = async (
   validator,
   mongoModel
 ) => {
-  await validator.validate(model_arguments);
+  if (validator) await validator.validate(model_arguments);
   return await (await new mongoModel(model_arguments)).save();
 };

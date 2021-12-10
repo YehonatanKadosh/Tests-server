@@ -5,6 +5,6 @@ const answersSchema = new Schema({
   answers: [String],
 });
 
-const answersModel = model("answer", answersSchema);
+const answersModel = model("answers", answersSchema);
 
 module.exports = answersModel;

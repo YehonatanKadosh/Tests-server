@@ -14,6 +14,7 @@ const topicRouter = require("./routs/topic");
 const tagRouter = require("./routs/tag");
 const questionRouter = require("./routs/question");
 const quizRouter = require("./routs/quiz");
+const quizRecordRouter = require("./routs/quizRecord");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -28,6 +29,7 @@ app.use("/topic", topicRouter);
 app.use("/tag", tagRouter);
 app.use("/question", questionRouter);
 app.use("/quiz", quizRouter);
+app.use("/quizRecord", quizRecordRouter);
 
 // errors handler
 app.use((err, req, res, next) => {
