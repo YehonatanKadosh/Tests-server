@@ -13,15 +13,6 @@ const createQuestion = async (question) =>
     )
   );
 
-const findQuestionsByTopic = async (topic) => {
-  const Questions = await questionModel.find({
-    topics: topic,
-    replaced: false,
-  });
-  if (!Questions.length) return Questions;
-  else return await getQuestionsReady(Questions);
-};
-
 const getQuestionReady = async (Question) => {
   const tags = await getTagsByIds(Question.tags);
   const topics = await getTopicsByIds(Question.topics);
@@ -43,12 +34,13 @@ const getQuestionsReady = async (Questions) =>
     }
   });
 
-const findQuestionsByTopicAndTag = async (topic, tag) => {
-  const Questions = await questionModel.find({
-    topics: topic,
-    replaced: false,
-    tags: tag,
-  });
+const findQuestions = async ({ topic, tag, partialQuestion }) => {
+  if (!topic && !tag && !partialQuestion) return [];
+  const search = { replaced: false };
+  if (topic) search.topics = topic;
+  if (tag) search.tags = tag;
+  if (partialQuestion) search.question = new RegExp(`${partialQuestion}`, "i");
+  const Questions = await questionModel.find(search);
   if (!Questions.length) return Questions;
   else return await getQuestionsReady(Questions);
 };
@@ -101,8 +93,7 @@ module.exports = {
   updateQuestion,
   removeQuestion,
   updateQuestion,
-  findQuestionsByTopic,
-  findQuestionsByTopicAndTag,
+  findQuestions,
   getQuestionsByIds,
   getQuestionsReady,
 };

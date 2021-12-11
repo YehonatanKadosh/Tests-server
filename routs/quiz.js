@@ -6,7 +6,7 @@ const {
   newQuizsVersion,
   createQuiz,
   updateQuiz,
-  findQuizsByTopic,
+  findQuizzes,
   removeQuiz,
   findQuizById,
   getQuizReadyForTest,
@@ -30,11 +30,9 @@ quizRouter.put("/", [auth, admin], async (req, res, next) => {
   }
 });
 
-quizRouter.get("/byTopic", [auth, admin], async (req, res, next) => {
-  const { topic } = req.query;
-  if (topic) res.send(await findQuizsByTopic(topic));
-  else next("no topic provided");
-});
+quizRouter.get("/withParams", [auth, admin], async (req, res, next) =>
+  res.send(await findQuizzes(req.query))
+);
 
 quizRouter.get("/", [auth], async (req, res, next) => {
   const { id } = req.query;

@@ -6,8 +6,7 @@ const {
   updateQuestion,
   newQuestionsVersion,
   removeQuestion,
-  findQuestionsByTopic,
-  findQuestionsByTopicAndTag,
+  findQuestions,
 } = require("../services/mongoose/requestHandlers/question");
 const questionRouter = express.Router();
 
@@ -29,10 +28,7 @@ questionRouter.put("/", [auth, admin], async (req, res, next) => {
 });
 
 questionRouter.get("/", [auth, admin], async (req, res, next) => {
-  const { topic, tag } = req.query;
-  if (topic && tag) res.send(await findQuestionsByTopicAndTag(topic, tag));
-  else if (topic) res.send(await findQuestionsByTopic(topic));
-  else next("no topic provided");
+  res.send(await findQuestions(req.query));
 });
 
 questionRouter.delete("/", [auth, admin], async (req, res, next) =>

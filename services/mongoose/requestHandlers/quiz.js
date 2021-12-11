@@ -9,12 +9,6 @@ const createQuiz = async (quiz) =>
     await genericCreate({ ...quiz, replaced: false }, quiz_validator, quizModel)
   );
 
-const findQuizsByTopic = async (topic) => {
-  const Quizes = await quizModel.find({ topic, replaced: false });
-  if (!Quizes.length) return Quizes;
-  return await getQuizesReady(Quizes);
-};
-
 const findQuizById = (_id) =>
   new Promise(async (res, rej) => {
     try {
@@ -48,20 +42,30 @@ const getQuizReady = async (Quiz) => {
   };
 };
 
-const getQuizesReady = async (Quizes) =>
+const getQuizzesReady = async (Quizzes) =>
   new Promise(async (res, rej) => {
     try {
-      const ReadyQuizes = [];
+      const ReadyQuizzes = [];
       let index = 0;
-      Quizes.forEach(async (Q) => {
-        ReadyQuizes.push(await getQuizReady(Q));
+      Quizzes.forEach(async (Q) => {
+        ReadyQuizzes.push(await getQuizReady(Q));
         index += 1;
-        if (index === Quizes.length) res(ReadyQuizes);
+        if (index === Quizzes.length) res(ReadyQuizzes);
       });
     } catch (error) {
       rej(error);
     }
   });
+
+const findQuizzes = async ({ topic, partialName }) => {
+  if (!topic && !partialName) return [];
+  const search = { replaced: false };
+  if (topic) search.topic = topic;
+  if (partialName) search.name = new RegExp(`${partialName}`, "i");
+  const Quizzes = await quizModel.find(search);
+  if (!Quizzes.length) return Quizzes;
+  else return await getQuizzesReady(Quizzes);
+};
 
 const updateQuiz = async (newquiz) => {
   const quiz = await quizModel.findOne({ _id: newquiz._id });
@@ -120,7 +124,7 @@ module.exports = {
   updateQuiz,
   removeQuiz,
   updateQuiz,
-  findQuizsByTopic,
+  findQuizzes,
   findQuizById,
   getQuizReadyForTest,
 };
