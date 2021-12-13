@@ -3,7 +3,7 @@ const admin = require("../services/authentication/admin");
 const auth = require("../services/authentication/auth");
 const user = require("../services/authentication/user");
 const {
-  newQuizsVersion,
+  newQuizzesVersion,
   createQuiz,
   updateQuiz,
   findQuizzes,
@@ -15,7 +15,7 @@ const quizRouter = express.Router();
 
 quizRouter.post("/", [auth, admin], async (req, res, next) => {
   try {
-    if (req.body._id) res.send(await newQuizsVersion(req.body));
+    if (req.body._id) res.send(await newQuizzesVersion(req.body));
     else res.send(await createQuiz(req.body));
   } catch (error) {
     next(error);

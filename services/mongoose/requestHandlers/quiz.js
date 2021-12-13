@@ -73,10 +73,8 @@ const updateQuiz = async (newquiz) => {
   return await getQuizReady(await quiz.save());
 };
 
-const newQuizsVersion = async (Q) => {
-  const oldQ = await quizModel.findOne({ _id: Q._id });
-  oldQ.replaced = true;
-  await oldQ.save();
+const newQuizzesVersion = async (Q) => {
+  await removeQuiz(Q);
   const {
     language,
     name,
@@ -115,12 +113,15 @@ const newQuizsVersion = async (Q) => {
   });
 };
 
-const removeQuiz = async ({ _id }) =>
-  await quizModel.findByIdAndRemove({ _id });
+const removeQuiz = async ({ _id }) => {
+  const oldQ = await quizModel.findOne({ _id });
+  oldQ.replaced = true;
+  return await oldQ.save();
+};
 
 module.exports = {
   createQuiz,
-  newQuizsVersion,
+  newQuizzesVersion,
   updateQuiz,
   removeQuiz,
   updateQuiz,

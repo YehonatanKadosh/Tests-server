@@ -52,9 +52,7 @@ const updateQuestion = async (newquestion) => {
 };
 
 const newQuestionsVersion = async (Q) => {
-  const oldQ = await questionModel.findOne({ _id: Q._id });
-  oldQ.replaced = true;
-  await oldQ.save();
+  await removeQuestion(Q);
   const {
     type,
     question,
@@ -84,9 +82,11 @@ const newQuestionsVersion = async (Q) => {
 const getQuestionsByIds = async (ids) =>
   await questionModel.find({ _id: { $in: ids } });
 
-const removeQuestion = async ({ _id }) =>
-  await questionModel.findByIdAndRemove({ _id });
-
+const removeQuestion = async ({ _id }) => {
+  const oldQ = await questionModel.findOne({ _id });
+  oldQ.replaced = true;
+  return await oldQ.save();
+};
 module.exports = {
   createQuestion,
   newQuestionsVersion,
