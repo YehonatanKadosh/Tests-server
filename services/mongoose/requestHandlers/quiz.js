@@ -128,4 +128,5 @@ module.exports = {
   findQuizzes,
   findQuizById,
   getQuizReadyForTest,
+  getQuizzesReady,
 };

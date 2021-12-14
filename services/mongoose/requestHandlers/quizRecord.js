@@ -1,7 +1,9 @@
 const { quizRecord_validator } = require("quizy-yk-common");
+const quizModel = require("../models/quiz");
 const quizRecordModel = require("../models/quizRecord");
 const { genericCreate } = require("./generiCRUD");
-const { findQuizById } = require("./quiz");
+const { findQuizById, getQuizzesReady } = require("./quiz");
+const { findUserById } = require("./user");
 
 const calculateFinalScore = (storedQuestions, answeredQuestions) => {
   let score = 0;
@@ -9,15 +11,19 @@ const calculateFinalScore = (storedQuestions, answeredQuestions) => {
   for (let question_i = 0; question_i < storedQuestions.length; question_i++) {
     let AnsweredCorrectly = true;
     const storedQuestion = storedQuestions[question_i];
-    const answeredQuestion = answeredQuestions[question_i];
+    const answeredQuestion = answeredQuestions.find(
+      (q) => q._id === storedQuestion._id.toString()
+    );
     for (
       let answer_i = 0;
       answer_i < storedQuestion.answers.length;
       answer_i++
     ) {
-      const storedAnswer = storedQuestion.answers[answer_i].isRight;
-      const answeredAnswer = answeredQuestion.answers[answer_i].isRight;
-      if (storedAnswer !== answeredAnswer) {
+      const storedAnswer = storedQuestion.answers[answer_i]._doc;
+      const answeredAnswer = answeredQuestion.answers.find(
+        (a) => a._id === storedAnswer._id.toString()
+      );
+      if (storedAnswer.isRight !== answeredAnswer.isRight) {
         AnsweredCorrectly = false;
         break;
       }
@@ -34,12 +40,30 @@ const getAnswers = async (questions) =>
     questions.forEach((question) => {
       index++;
       answers.push({
-        question: questions._id,
+        question: question._id,
         answers: question.answers.filter((a) => a.isRight).map((a) => a._id),
       });
       if (index === questions.length) res(answers);
     });
   });
+
+const getRecordsReady = async (records) => {
+  const Records = [];
+  const quizzesIDs = records.map((r) => r.quiz);
+  const Quizzes = await quizModel.find({ _id: { $in: quizzesIDs } });
+  const ReadyQuizzes = await getQuizzesReady(Quizzes);
+  for (let i = 0; i < records.length; i++) {
+    const { firstName, lastName, email, phoneNumber, _id } = await findUserById(
+      records[i]._doc.user
+    );
+    Records.push({
+      ...records[i]._doc,
+      quiz: ReadyQuizzes.find((q) => q._id.toString() === records[i]._doc.quiz),
+      user: { firstName, lastName, email, phoneNumber, _id },
+    });
+  }
+  return Records;
+};
 
 module.exports.createQuizRecord = (requestBody, user) =>
   new Promise(async (res, rej) => {
@@ -71,3 +95,19 @@ module.exports.createQuizRecord = (requestBody, user) =>
       rej(error);
     }
   });
+
+module.exports.getStudentRecords = async (_id) => {
+  const records = await quizRecordModel.find({ user: _id });
+  return await getRecordsReady(records);
+};
+
+module.exports.getQuizRecords = async (_id, dateRange) => {
+  const filter = { quiz: _id };
+  if (dateRange) {
+    filter.date = {};
+    if (dateRange[0] !== "null") filter.date.$gte = dateRange[0];
+    if (dateRange[1] !== "null") filter.date.$lt = dateRange[1];
+  }
+  const records = await quizRecordModel.find(filter);
+  return await getRecordsReady(records);
+};

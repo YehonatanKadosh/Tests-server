@@ -5,6 +5,9 @@ const userModel = require("../models/user");
 
 module.exports.findUserById = async (_id) => await genericGet(_id, userModel);
 
+module.exports.getAllStudents = async () =>
+  await userModel.find({ role: roles.User });
+
 module.exports.findUserByEmail = async (email) =>
   await userModel.findOne({ email });
 
