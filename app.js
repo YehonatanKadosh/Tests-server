@@ -16,6 +16,7 @@ const questionRouter = require("./routs/question");
 const quizRouter = require("./routs/quiz");
 const quizRecordRouter = require("./routs/quizRecord");
 const studentRouter = require("./routs/student");
+const emailRouter = require("./routs/email");
 
 // app config
 app.use(cors({ exposedHeaders: process.env.JWTHeaderName }));
@@ -32,6 +33,7 @@ app.use("/question", questionRouter);
 app.use("/quiz", quizRouter);
 app.use("/quizRecord", quizRecordRouter);
 app.use("/student", studentRouter);
+app.use("/email", emailRouter);
 
 // errors handler
 app.use((err, req, res, next) => {

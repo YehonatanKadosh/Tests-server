@@ -4,6 +4,7 @@ const quizRecordModel = require("../models/quizRecord");
 const { genericCreate } = require("./generiCRUD");
 const { findQuizById, getQuizzesReady } = require("./quiz");
 const { findUserById } = require("./user");
+const sendEmail = require("../../sendGrid/send");
 
 const calculateFinalScore = (storedQuestions, answeredQuestions) => {
   let score = 0;
@@ -77,6 +78,36 @@ module.exports.createQuizRecord = (requestBody, user) =>
         if (answers[question_i].answers.length) questionsAnswered += 1;
       const storedQuiz = await findQuizById(_id);
       const finalScore = calculateFinalScore(storedQuiz.questions, questions);
+
+      // send Email
+      const {
+        passingScore,
+        successEmailSubject,
+        failEmailSubject,
+        successEmailMessage,
+        failEmailMessage,
+      } = storedQuiz;
+      const passed = finalScore >= passingScore;
+      const storedUser = await findUserById(user);
+      const message = {
+        to: storedUser.email,
+        from: "jacojacoj3@gmail.com",
+        subject: passed ? successEmailSubject : failEmailSubject,
+        html: `<div style="text-align: center;">
+                <div>
+                  Passing Grade: <strong>${passingScore}</strong>
+                </div>
+                <div>
+                  ${passed ? successEmailMessage : failEmailMessage}
+                </div>
+                <div style="color: ${passed ? "green" : "red"};">
+                  <strong>Grade: ${finalScore}</strong>
+                </div>
+              </div>`,
+      };
+      sendEmail(message);
+
+      // create new record
       const newQuizRecord = await genericCreate(
         {
           quiz: _id,
